@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Sarah Lee</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,440;0,9..144,560;0,9..144,640;1,9..144,440;1,9..144,500&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  /* ============ Design tokens ============ */
+  :root{
+    --paper: #F7F1E4;
+    --paper-alt: #EFE4CC;
+    --paper-deep: #E7D9B8;
+    --ink: #2A241C;
+    --ink-soft: #63594A;
+    --ink-faint: #948A76;
+    --accent: #9C6B24;
+    --accent-deep: #7A5219;
+    --accent-soft: #E8D2A8;
+    --line: #DACBA2;
+    --card: #FFFCF5;
+    --shadow: rgba(42,36,28,0.10);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #1C1712;
+      --paper-alt: #241D15;
+      --paper-deep: #2C2317;
+      --ink: #F3EBD9;
+      --ink-soft: #C7B99C;
+      --ink-faint: #8F8267;
+      --accent: #E0AC53;
+      --accent-deep: #F2C57C;
+      --accent-soft: #4A3B22;
+      --line: #3B301F;
+      --card: #221B14;
+      --shadow: rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1C1712;
+    --paper-alt: #241D15;
+    --paper-deep: #2C2317;
+    --ink: #F3EBD9;
+    --ink-soft: #C7B99C;
+    --ink-faint: #8F8267;
+    --accent: #E0AC53;
+    --accent-deep: #F2C57C;
+    --accent-soft: #4A3B22;
+    --line: #3B301F;
+    --card: #221B14;
+    --shadow: rgba(0,0,0,0.35);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ text-size-adjust:100%; }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Archivo", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{ animation: rise 0.7s cubic-bezier(.2,.7,.2,1) both; }
+    .reveal-1{ animation-delay:.05s; }
+    .reveal-2{ animation-delay:.15s; }
+    .reveal-3{ animation-delay:.25s; }
+    @keyframes rise{
+      from{ opacity:0; transform:translateY(10px); }
+      to{ opacity:1; transform:translateY(0); }
+    }
+  }
+
+  h1,h2,h3{ font-family:"Fraunces", Georgia, "Iowan Old Style", serif; font-weight:560; letter-spacing:-0.01em; text-wrap:balance; margin:0; }
+  a{ color:inherit; }
+  ::selection{ background:var(--accent-soft); color:var(--ink); }
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+
+  .wrap{ max-width:1080px; margin:0 auto; padding:0 clamp(20px,5vw,64px); }
+  .eyebrow{
+    font-family:"Archivo"; font-weight:700; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--accent-deep);
+  }
+  .rule{ height:1px; background:var(--line); border:0; margin:0; }
+
+  /* ============ Masthead ============ */
+  .masthead{ padding:clamp(48px,8vw,96px) 0 clamp(40px,6vw,64px); }
+  .masthead-grid{
+    display:grid;
+    grid-template-columns: 1.35fr 0.9fr;
+    gap: clamp(32px,5vw,72px);
+    align-items:start;
+  }
+  .name{ font-size:clamp(2.6rem,6vw,4.4rem); line-height:0.98; margin-top:14px; }
+  .role{ font-family:"Fraunces"; font-style:italic; font-weight:440; font-size:clamp(1.05rem,2vw,1.35rem); color:var(--ink-soft); margin-top:10px; }
+  .intro{ margin-top:22px; max-width:52ch; font-size:1.06rem; color:var(--ink-soft); }
+  .intro strong{ color:var(--ink); font-weight:600; }
+
+  .contact-rail{ margin-top:30px; display:flex; flex-direction:column; gap:11px; }
+  .contact-row{ display:flex; align-items:center; gap:11px; font-size:0.92rem; }
+  .contact-row svg{ flex:none; width:16px; height:16px; stroke:var(--accent); }
+  .contact-row a{ text-decoration:none; border-bottom:1px solid transparent; }
+  .contact-row a:hover{ border-bottom-color:var(--accent); }
+
+  .portrait-card{
+    position:relative;
+    background:var(--card);
+    border:1px solid var(--line);
+    padding:14px 14px 20px;
+    box-shadow:0 18px 40px -22px var(--shadow);
+  }
+  .portrait-frame{ position:relative; overflow:hidden; aspect-ratio:1/1.06; }
+  .portrait-frame img{ width:100%; height:100%; object-fit:cover; display:block; filter:saturate(0.92) sepia(0.08) contrast(1.02); }
+  .portrait-caption{
+    display:flex; justify-content:space-between; align-items:baseline;
+    margin-top:14px; padding-top:12px; border-top:1px solid var(--line);
+    font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-faint);
+  }
+  .portrait-caption b{ color:var(--ink-soft); font-weight:700; }
+
+  /* ============ Stat band ============ */
+  .stats-section{ padding:clamp(36px,6vw,56px) 0; }
+  .stats-head{ display:flex; align-items:baseline; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:28px; }
+  .stats-head h2{ font-size:clamp(1.5rem,2.6vw,1.9rem); }
+  .stats-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line);
+  }
+  .stat{ background:var(--paper); padding:26px 22px; }
+  .stat .num{ font-family:"Fraunces"; font-weight:560; font-size:clamp(2rem,4vw,2.6rem); font-variant-numeric:tabular-nums; color:var(--accent-deep); line-height:1; }
+  .stat .label{ margin-top:10px; font-size:0.82rem; color:var(--ink-soft); max-width:22ch; }
+
+  /* ============ Experience ============ */
+  .section{ padding:clamp(40px,6vw,64px) 0; }
+  .section-head{ margin-bottom:34px; }
+  .section-head h2{ font-size:clamp(1.6rem,2.8vw,2.1rem); }
+  .section-head .eyebrow{ display:block; margin-bottom:10px; }
+
+  .timeline{ display:flex; flex-direction:column; }
+  .role-item{
+    display:grid; grid-template-columns:180px 1fr; gap:clamp(20px,4vw,40px);
+    padding:26px 0; border-top:1px solid var(--line);
+  }
+  .role-item:last-child{ border-bottom:1px solid var(--line); }
+  .role-dates{ font-size:0.82rem; color:var(--ink-faint); letter-spacing:0.02em; padding-top:4px; font-variant-numeric:tabular-nums; }
+  .role-title{ font-family:"Fraunces"; font-weight:600; font-size:1.24rem; }
+  .role-org{ margin-top:3px; font-size:0.92rem; color:var(--accent-deep); font-weight:600; }
+  .role-list{ margin:14px 0 0; padding-left:0; list-style:none; display:flex; flex-direction:column; gap:9px; max-width:62ch; }
+  .role-list li{ position:relative; padding-left:18px; color:var(--ink-soft); font-size:0.96rem; }
+  .role-list li::before{ content:""; position:absolute; left:0; top:0.65em; width:6px; height:6px; background:var(--accent); }
+
+  /* ============ Two-col: education + certifications ============ */
+  .split{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(32px,5vw,64px); }
+  .edu-item + .edu-item{ margin-top:22px; padding-top:22px; border-top:1px solid var(--line); }
+  .edu-degree{ font-family:"Fraunces"; font-weight:560; font-size:1.08rem; }
+  .edu-school{ margin-top:4px; font-size:0.92rem; color:var(--accent-deep); font-weight:600; }
+  .edu-meta{ margin-top:4px; font-size:0.82rem; color:var(--ink-faint); }
+  .edu-note{ margin-top:8px; font-size:0.88rem; color:var(--ink-soft); }
+
+  .cert-item{ display:flex; gap:16px; padding:16px 0; border-top:1px solid var(--line); }
+  .cert-year{ flex:none; font-family:"Fraunces"; font-weight:560; color:var(--accent-deep); font-size:0.95rem; font-variant-numeric:tabular-nums; padding-top:1px; }
+  .cert-name{ font-weight:700; font-size:0.96rem; }
+  .cert-issuer{ font-size:0.84rem; color:var(--ink-faint); margin-top:2px; }
+
+  /* ============ Skills ============ */
+  .skill-groups{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(22px,4vw,36px); }
+  .skill-group h3{ font-family:"Archivo"; font-weight:700; font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-faint); }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .chip{
+    border:1px solid var(--line); background:var(--card); color:var(--ink-soft);
+    padding:7px 13px; font-size:0.85rem; font-weight:500;
+  }
+
+  /* ============ Beyond the desk ============ */
+  .beyond{ background:var(--paper-alt); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .beyond-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); margin-top:32px; }
+  .beyond-card{ background:var(--paper-alt); padding:26px 24px; }
+  .beyond-card h3{ font-family:"Fraunces"; font-weight:560; font-size:1.08rem; }
+  .beyond-card p{ margin:10px 0 0; font-size:0.88rem; color:var(--ink-soft); }
+  .beyond-fact{ margin-top:14px; font-size:0.78rem; letter-spacing:0.04em; color:var(--accent-deep); font-weight:700; font-variant-numeric:tabular-nums; }
+
+  /* ============ Footer / CTA ============ */
+  .cta{ padding:clamp(48px,8vw,88px) 0 clamp(56px,8vw,96px); }
+  .cta-inner{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:32px; flex-wrap:wrap;
+    padding-top:40px; border-top:1px solid var(--line);
+  }
+  .cta h2{ font-size:clamp(1.9rem,3.6vw,2.7rem); max-width:14ch; }
+  .cta-links{ display:flex; flex-direction:column; gap:10px; align-items:flex-start; }
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--ink); color:var(--paper); text-decoration:none;
+    padding:13px 22px; font-size:0.92rem; font-weight:700;
+    border:1px solid var(--ink);
+  }
+  .btn:hover{ background:transparent; color:var(--ink); }
+  .btn-ghost{
+    display:inline-flex; align-items:center; gap:10px;
+    color:var(--ink-soft); text-decoration:none; font-size:0.88rem; font-weight:600;
+    border-bottom:1px solid var(--line); padding-bottom:2px;
+  }
+  .btn-ghost:hover{ color:var(--accent-deep); border-color:var(--accent-deep); }
+  .fine-print{ margin-top:56px; display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; font-size:0.76rem; color:var(--ink-faint); }
+
+  /* ============ Responsive ============ */
+  @media (max-width: 860px){
+    .masthead-grid{ grid-template-columns:1fr; }
+    .portrait-card{ max-width:340px; }
+    .stats-grid{ grid-template-columns:repeat(2,1fr); }
+    .split{ grid-template-columns:1fr; }
+    .skill-groups{ grid-template-columns:1fr; }
+    .beyond-grid{ grid-template-columns:1fr; }
+    .role-item{ grid-template-columns:1fr; gap:6px; }
+  }
+  @media (max-width: 520px){
+    .stats-grid{ grid-template-columns:1fr; }
+  }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="masthead-grid">
+      <div class="reveal reveal-1">
+        <span class="eyebrow">HR Business Partner · Organisational Development</span>
+        <h1 class="name">Sarah&nbsp;Lee</h1>
+        <p class="role">Building people-first cultures across financial services &amp; tech in Singapore</p>
+        <p class="intro">
+          <strong>Eight years</strong> partnering with senior leadership and frontline teams alike — from bank-wide
+          engagement turnarounds at DBS to scaling Grab's Singapore workforce through hypergrowth. I translate HR
+          strategy into ground-level action that leadership trusts and employees feel.
+        </p>
+
+        <div class="contact-rail">
+          <div class="contact-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.4"/></svg>
+            <span>Singapore 529123</span>
+          </div>
+          <div class="contact-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M4 5c0-.6.4-1 1-1h2.3c.5 0 .9.3 1 .8l.8 3.3c.1.4 0 .9-.4 1.2L7.2 10.7a13.7 13.7 0 0 0 6.1 6.1l1.4-1.5c.3-.3.8-.5 1.2-.4l3.3.8c.5.1.8.5.8 1V19c0 .6-.4 1-1 1h-1.5C9.6 20 4 14.4 4 6.5V5Z"/></svg>
+            <a href="tel:+6591234567">+65 9123 4567</a>
+          </div>
+          <div class="contact-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3.5" y="5" width="17" height="14" rx="1"/><path d="m4 6 8 6.5L20 6"/></svg>
+            <a href="mailto:sarah.lee@email.com">sarah.lee@email.com</a>
+          </div>
+          <div class="contact-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M8 10.5v6M8 7.8v.01M12.5 16.5v-4c0-1.2.8-2 2-2s1.8.8 1.8 2v4"/></svg>
+            <a href="https://linkedin.com/in/sarahlee-sg">linkedin.com/in/sarahlee-sg</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="portrait-card reveal reveal-2">
+        <div class="portrait-frame">
+          <img src="sarah-lee.png" alt="Portrait of Sarah Lee" />
+        </div>
+        <div class="portrait-caption">
+          <span>Sarah Lee</span>
+          <b>Singapore</b>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="stats-section reveal reveal-3">
+    <div class="stats-head">
+      <h2>Impact, in numbers</h2>
+    </div>
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="num">8</div>
+        <div class="label">years across financial services &amp; tech HR</div>
+      </div>
+      <div class="stat">
+        <div class="num">600+</div>
+        <div class="label">staff partnered across 4 business divisions at DBS</div>
+      </div>
+      <div class="stat">
+        <div class="num">+14</div>
+        <div class="label">point engagement lift in 18 months, bank-wide</div>
+      </div>
+      <div class="stat">
+        <div class="num">&minus;22%</div>
+        <div class="label">time-to-hire after redesigning graduate recruitment</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="eyebrow">Career</span>
+      <h2>Experience</h2>
+    </div>
+    <div class="timeline">
+      <article class="role-item">
+        <div class="role-dates">Jan 2021 &mdash; Present</div>
+        <div>
+          <h3 class="role-title">Senior HR Business Partner</h3>
+          <div class="role-org">DBS Bank · Singapore</div>
+          <ul class="role-list">
+            <li>Partner with 4 business divisions (~600 staff) on talent planning, performance management, and leadership development.</li>
+            <li>Led a bank-wide employee experience initiative that improved engagement scores by 14 points over 18 months.</li>
+            <li>Redesigned the graduate recruitment framework, cutting time-to-hire by 22% and lifting offer acceptance.</li>
+            <li>Facilitate quarterly leadership workshops on psychological safety and inclusive management.</li>
+            <li>Managed HR aspects of two internal restructuring exercises, including redeployment, communication, and wellbeing support.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="role-item">
+        <div class="role-dates">Aug 2018 &mdash; Dec 2020</div>
+        <div>
+          <h3 class="role-title">HR Business Partner</h3>
+          <div class="role-org">Grab Holdings · Singapore</div>
+          <ul class="role-list">
+            <li>Supported headcount growth from 200 to 450 staff in Singapore through structured onboarding and career pathways.</li>
+            <li>Co-designed Grab Singapore's first Manager Effectiveness Programme, adopted by 120 people managers.</li>
+            <li>Handled employee relations cases across Singapore and Malaysia, ensuring fair, consistent outcomes.</li>
+            <li>Implemented Workday HRIS for the Singapore entity, training 30 HR and finance users.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="role-item">
+        <div class="role-dates">Jul 2016 &mdash; Jul 2018</div>
+        <div>
+          <h3 class="role-title">HR Executive</h3>
+          <div class="role-org">Prudential Singapore · Singapore</div>
+          <ul class="role-list">
+            <li>Managed end-to-end recruitment for mid-management and professional roles across actuarial, compliance, and operations.</li>
+            <li>Coordinated annual performance review and salary benchmarking cycles for 800+ employees.</li>
+            <li>Supported SkillsFuture and MOM reporting; maintained compliance with Employment Act obligations.</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="split">
+      <div>
+        <div class="section-head">
+          <span class="eyebrow">Foundation</span>
+          <h2>Education</h2>
+        </div>
+        <div class="edu-item">
+          <div class="edu-degree">Bachelor of Business Administration, Human Resource Management</div>
+          <div class="edu-school">National University of Singapore</div>
+          <div class="edu-meta">2012 &mdash; 2016</div>
+          <p class="edu-note">Dean's List AY2015/16 · Specialisation in Organisational Behaviour · NUS Merit Scholarship recipient</p>
+        </div>
+        <div class="edu-item">
+          <div class="edu-degree">GCE A-Levels</div>
+          <div class="edu-school">Raffles Junior College</div>
+          <div class="edu-meta">2010 &mdash; 2011</div>
+          <p class="edu-note">4 'H2' distinctions incl. Economics &amp; Mathematics · House Committee, Volleyball Captain</p>
+        </div>
+        <div class="edu-item">
+          <div class="edu-degree">GCE O-Levels</div>
+          <div class="edu-school">Nanyang Girls' High School</div>
+          <div class="edu-meta">2006 &mdash; 2009</div>
+          <p class="edu-note">L1R5: 6 · Prefect · Best in Humanities Award</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-head">
+          <span class="eyebrow">Credentials</span>
+          <h2>Certifications</h2>
+        </div>
+        <div class="cert-item">
+          <div class="cert-year">2022</div>
+          <div>
+            <div class="cert-name">IHRP Senior Professional (IHRP&#8209;SP)</div>
+            <div class="cert-issuer">Institute for Human Resource Professionals</div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-year">2021</div>
+          <div>
+            <div class="cert-name">SkillsFuture for HR &mdash; Workforce Planning</div>
+            <div class="cert-issuer">Singapore National Employers Federation</div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-year">2020</div>
+          <div>
+            <div class="cert-name">Certified Practitioner in Human Resources (CPHR)</div>
+            <div class="cert-issuer">SHRM</div>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-year">2019</div>
+          <div>
+            <div class="cert-name">Advanced Certificate in Training &amp; Assessment (ACTA)</div>
+            <div class="cert-issuer">Workforce Singapore</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <span class="eyebrow">Toolkit</span>
+      <h2>Core skills</h2>
+    </div>
+    <div class="skill-groups">
+      <div class="skill-group">
+        <h3>HR &amp; People</h3>
+        <div class="chips">
+          <span class="chip">HRBP / Generalist</span>
+          <span class="chip">Talent Acquisition</span>
+          <span class="chip">Performance Management</span>
+          <span class="chip">Employee Relations</span>
+          <span class="chip">Organisational Design</span>
+          <span class="chip">MOM / EA Compliance</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Tools &amp; Systems</h3>
+        <div class="chips">
+          <span class="chip">Workday HRIS</span>
+          <span class="chip">SAP SuccessFactors</span>
+          <span class="chip">Microsoft 365</span>
+          <span class="chip">Power BI (basic)</span>
+          <span class="chip">DocuSign</span>
+          <span class="chip">Taleo / Greenhouse</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Soft Skills</h3>
+        <div class="chips">
+          <span class="chip">Stakeholder Management</span>
+          <span class="chip">Facilitation &amp; Training</span>
+          <span class="chip">Data Analysis</span>
+          <span class="chip">Change Management</span>
+          <span class="chip">Executive Communication</span>
+          <span class="chip">Coaching</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="beyond">
+  <div class="wrap section">
+    <div class="section-head">
+      <span class="eyebrow">Off the clock</span>
+      <h2>Beyond the desk</h2>
+    </div>
+    <div class="beyond-grid">
+      <div class="beyond-card">
+        <h3>Distance running</h3>
+        <p>Four full marathons completed, including SCMS 2023 and Gold Coast 2022. Trains five days a week with a running club in East Coast Park.</p>
+        <div class="beyond-fact">PB 4:12</div>
+      </div>
+      <div class="beyond-card">
+        <h3>Baking &amp; food science</h3>
+        <p>Home baker focused on sourdough and French patisserie, sharing recipes with a growing community on Instagram.</p>
+        <div class="beyond-fact">@sarahbakes.sg · 2,400 followers</div>
+      </div>
+      <div class="beyond-card">
+        <h3>Volunteer mentoring</h3>
+        <p>Mentors fresh NUS graduates each year through the NUS Alumni Mentorship Programme &mdash; career navigation and workplace confidence.</p>
+        <div class="beyond-fact">3 mentees / year</div>
+      </div>
+      <div class="beyond-card">
+        <h3>Travel &amp; languages</h3>
+        <p>Conversational in Mandarin, Hokkien, and basic Japanese (JLPT N4). Keeps a personal travel journal.</p>
+        <div class="beyond-fact">22 countries visited</div>
+      </div>
+      <div class="beyond-card">
+        <h3>Reading</h3>
+        <p>Organisational psychology and behavioural economics, alongside literary fiction and Singaporean literature.</p>
+        <div class="beyond-fact">20&ndash;25 books / year</div>
+      </div>
+      <div class="beyond-card">
+        <h3>Currently reading</h3>
+        <p>"Thinking in Systems" by Donella Meadows &mdash; on feedback loops, leverage points, and how systems really change.</p>
+        <div class="beyond-fact">Donella Meadows</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="cta">
+    <div class="cta-inner">
+      <h2>Let's talk about your next HR leadership hire.</h2>
+      <div class="cta-links">
+        <a class="btn" href="mailto:sarah.lee@email.com">
+          Email Sarah
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </a>
+        <a class="btn-ghost" href="https://linkedin.com/in/sarahlee-sg">Connect on LinkedIn &rarr;</a>
+      </div>
+    </div>
+    <div class="fine-print">
+      <span>References available upon request.</span>
+      <span>Sarah Lee &middot; Singapore</span>
+    </div>
+  </section>
+</div>
+
+</body>
+</html>
